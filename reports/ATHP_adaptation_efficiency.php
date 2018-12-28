@@ -26,12 +26,12 @@ $reportdata["footertext"] .= '
 <tr bgcolor="#efefef" style="text-align:center;font-weight:bold;">
 <td>ip</td>
 <td>uid</td>
-<td>Слоты (максимум за 7 дней)</td>
+<td>Слоты (максимум за вчера)</td>
 <td>Онлайн (максимум за 7 дней)</td>
 <td>Процент использования слотов (за 7 дней)</td>
 </tr>';
 
-$slots  = InstanceStatisticsController::getMaxSlotsByVirtualServersLastWeekly( $ipAllow );
+$slots  = InstanceStatisticsController::getMaxSlotsByVirtualServersLastDay( $ipAllow );
 $online = InstanceStatisticsController::getMaxOnlineByVirtualServersLastWeekly( $ipAllow );
 
 foreach ( $slots as $ip => $virtualServers ) {
@@ -46,9 +46,9 @@ foreach ( $slots as $ip => $virtualServers ) {
 		$OnlineToSlotsRate = round( $maxOnlineWeekly * 100 / $maxSlotsWeekly, 2 );
 
 		if ( $OnlineToSlotsRate > 70 ) {
-			$color = '#90EE90';
+			$color = '#68C398';
 		} else {
-			$color = 'red';
+			$color = '#F57C71';
 		}
 
 		$reportdata["footertext"] .= '<tr bgcolor="' . $color . '" style="text-align:center;"><td>' . substr( $ip, 0, - 5 ) . '</td><td>' . $uid . '</td><td>' . $maxSlotsWeekly . '</td><td>' . $maxOnlineWeekly . '</td><td>' . $OnlineToSlotsRate . '%</td></tr>';
@@ -77,7 +77,7 @@ foreach ( $ipList as $ip ) {
 $reportdata["headertext"] .= '</select>';
 $reportdata["headertext"] .= '<br/><br/><div class="form-group col-md-3">
     <label for="exampleInputPassword1">Минимум слотов на сервере для отображения</label>
-    <input type="number" class="form-control" id="minSlot" name="minSlot" onchange="$(\'#ipFilter\').submit();" value="'.$minSlots.'" placeholder="Минимум слотов">
+    <input type="number" class="form-control" id="minSlot" name="minSlot" onchange="$(\'#ipFilter\').submit();" value="' . $minSlots . '" placeholder="Минимум слотов">
   </div>';
 
 $reportdata["headertext"] .= '</form>' .
